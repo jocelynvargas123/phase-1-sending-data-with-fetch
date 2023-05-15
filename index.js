@@ -1,28 +1,21 @@
-function submitData(name, email) {
-    const formData = {
-        name : name,
-        email : email,
-    }
-
-    const dataObject = {
+function submitData(name, email){
+    return fetch("http://localhost:3000/users", {
         method: "POST",
         headers: {
-            "Content-Type": 'application/json',
-            "Accept": 'application/json',
+            "Content-Type": "application/json",
+            "Accept": "application/json",
         },
-        body: JSON.stringify(formData)
-    }
+        body: JSON.stringify({
+            name: `${name}`,
+            email: `${email}`,
 
-    return fetch('http://localhost:3000/users', dataObject)
-    .then((response) => response.json())
-
+        })
+    })
+    .then(resp => resp.json())
     .then(function (data) {
         const newDiv = document.createElement('div')
         document.querySelector('body').appendChild(newDiv)
-        document.querySelector('div').innerHTML = data.id
+        document.querySelector('div').append(data.id)
     })
-    .catch((e) => {
-        return console.log("error")
-
-    })
+    .catch(error => document.querySelector('div').append(error))
 }
